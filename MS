@@ -1,0 +1,70 @@
+#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
+
+void merge(int A[], int p, int q, int r)
+{
+  int n_1 = q - p; //size of Left array
+  int n_2 = r - q - 1; //size of Right array
+  int L[n_1 + 1]; //Make additional element for the sentinel
+  int R[n_2 + 1];
+  for(int i = 0; i <= n_1; i++)
+  {
+    L[i] = A[p + i]; //copy elements into L
+  }
+  for(int j = 0; j <= n_2; j++)
+  {
+    R[j] = A[q + j + 1]; //copy elements into R
+  }
+  L[n_1 + 1] = INT_MAX;
+  R[n_2 + 1] = INT_MAX;
+  int i = 0, j = 0;
+  for( int k = p; k <= r; k++)
+  {
+    if(L[i] <= R[j])
+    {
+      A[k] = L[i];
+      i = i + 1;
+    }
+    else
+    {
+      A[k] = R[j];
+      j = j + 1;
+    }
+  }
+}
+
+void merge_Sort(int A[], int p, int r)
+{
+  if(p < r)
+  {
+    int q = (p + r)/2;
+    merge_Sort(A,p,q); //MergeSort for the lower half
+    merge_Sort(A,(q + 1),r); //MergeSort for the upper half
+    merge(A,p,q,r);
+  }
+}
+
+void print_Array(int A[], int b)
+{
+  for(int i = 0; i < b; i ++)
+    cout << A[i] << ";";
+}
+
+int main()
+{
+  int size;
+  cin >> size;
+  int array[size];
+  
+  for(int i = 0; i < size; i++)
+  {
+    cin >> array[i];
+  }
+  
+  merge_Sort(array, 0, size - 1); // sort array from element 0 to (size-1)
+  print_Array(array,size);
+  
+  
+  return 0;
+}
